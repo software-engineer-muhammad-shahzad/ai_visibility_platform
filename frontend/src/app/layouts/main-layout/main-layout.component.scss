@@ -1,0 +1,6 @@
+.shell { height: 100vh; background: var(--bg); }
+.sidebar { width: 248px; background: var(--sidebar); color: #cbd5e6; border-right: 0; padding: 20px 14px; }
+:host ::ng-deep .sidebar .mat-drawer-inner-container { display: flex; flex-direction: column; }
+.content { background: var(--bg); }
+.main { padding: 24px; }
+@media (max-width: 900px) { .main { padding: 16px; } }

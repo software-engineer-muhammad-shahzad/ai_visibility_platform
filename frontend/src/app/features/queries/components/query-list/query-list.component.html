@@ -1,0 +1,96 @@
+<app-query-filters
+  [minScore]="minScore"
+  [status]="status"
+  [hasFilters]="hasFilters"
+  [canExport]="!!data()?.items?.length"
+  (reset)="resetFilters()"
+  (exportCsv)="exportCsv()"
+/>
+
+@if (loading() && !data()) {
+  <app-loading-spinner variant="skeleton" />
+} @else if (error(); as err) {
+  <app-error-state title="Unable to load queries" [message]="err" (retry)="reload()" />
+} @else if (data(); as d) {
+  @if (d.items.length === 0 && d.total === 0) {
+    <app-empty-state
+      icon="manage_search"
+      [title]="hasFilters ? 'No queries match these filters' : 'No queries discovered yet'"
+      [message]="hasFilters ? 'Try lowering the minimum score or clearing the visibility filter.' : 'Run the pipeline for this profile to discover and score search queries.'"
+    />
+  } @else {
+    <div class="table-wrap" [class.dim]="loading()">
+      <table mat-table [dataSource]="d.items">
+        <ng-container matColumnDef="query_text">
+          <th mat-header-cell *matHeaderCellDef>Query</th>
+          <td mat-cell *matCellDef="let q" class="query-cell">{{ q.query_text }}</td>
+        </ng-container>
+        <ng-container matColumnDef="volume">
+          <th mat-header-cell *matHeaderCellDef>Est. search volume</th>
+          <td mat-cell *matCellDef="let q">{{ q.estimated_search_volume === null ? '—' : (q.estimated_search_volume | number) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="difficulty">
+          <th mat-header-cell *matHeaderCellDef>Competitive difficulty</th>
+          <td mat-cell *matCellDef="let q">
+            @if (q.competitive_difficulty === null) {
+              —
+            } @else if (isNumber(q.competitive_difficulty)) {
+              {{ q.competitive_difficulty | number: '1.0-2' }}
+            } @else {
+              {{ q.competitive_difficulty }}
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef>Opportunity score</th>
+          <td mat-cell *matCellDef="let q">
+            @if (q.opportunity_score === null) {
+              —
+            } @else {
+              <mat-chip-set aria-label="Opportunity score"><mat-chip disableRipple class="score {{ scoreClass(q.opportunity_score) }}">{{ q.opportunity_score | number: '1.2-2' }}</mat-chip></mat-chip-set>
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="visibility">
+          <th mat-header-cell *matHeaderCellDef>Visibility</th>
+          <td mat-cell *matCellDef="let q">
+            <app-status-badge
+              [status]="visibilityStatus(q.domain_visible)"
+              [label]="q.domain_visible === null ? 'Unknown' : q.domain_visible ? 'Visible' : 'Not visible'"
+            />
+            @if (q.visibility_position !== null) {
+              <span class="muted pos">#{{ q.visibility_position }}</span>
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let q">
+            <button mat-stroked-button (click)="recheck(q)" [disabled]="rechecking().has(q.uuid) || !q.uuid">
+              @if (rechecking().has(q.uuid)) {
+                <mat-spinner diameter="16" />
+              } @else {
+                <mat-icon>refresh</mat-icon>
+              }
+              {{ rechecking().has(q.uuid) ? 'Checking…' : 'Recheck' }}
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+    </div>
+    @if (d.items.length === 0) {
+      <app-empty-state icon="last_page" title="No results on this page" message="Go back to a previous page." />
+    }
+    <mat-paginator
+      [length]="d.total"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      showFirstLastButtons
+      (page)="onPage($event)"
+      aria-label="Select page of queries"
+    />
+  }
+}

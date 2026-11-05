@@ -1,0 +1,32 @@
+<app-async-state
+  errorTitle="Unable to load recommendations"
+  emptyIcon="lightbulb"
+  emptyTitle="No recommendations yet"
+  emptyMessage="Content recommendations are generated when the pipeline runs for this profile."
+  [loading]="loading()"
+  [error]="error()"
+  [empty]="items().length === 0"
+  (retry)="reload()"
+>
+  <ng-template>
+    <div class="toolbar">
+      <mat-button-toggle-group [value]="filter()" (change)="setFilter($event.value)" aria-label="Filter by priority" hideSingleSelectionIndicator>
+        <mat-button-toggle value="all">All</mat-button-toggle>
+        <mat-button-toggle value="high">High</mat-button-toggle>
+        <mat-button-toggle value="medium">Medium</mat-button-toggle>
+        <mat-button-toggle value="low">Low</mat-button-toggle>
+      </mat-button-toggle-group>
+      <span class="muted">{{ visible().length }} of {{ items().length }} shown</span>
+    </div>
+
+    @if (visible().length === 0) {
+      <app-empty-state icon="filter_alt_off" title="No recommendations with this priority" message="Choose another priority filter." />
+    } @else {
+      <div class="cards">
+        @for (r of visible(); track r.recommendation_uuid || $index) {
+          <app-recommendation-card [recommendation]="r" />
+        }
+      </div>
+    }
+  </ng-template>
+</app-async-state>

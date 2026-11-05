@@ -1,0 +1,23 @@
+<app-async-state
+  variant="spinner"
+  loadingLabel="Loading chart data…"
+  errorTitle="Unable to load chart data"
+  emptyIcon="bar_chart"
+  emptyTitle="No scored queries to chart"
+  emptyMessage="Run the pipeline for this profile to discover and score queries."
+  [loading]="loading()"
+  [error]="error()"
+  [empty]="scored().length === 0"
+  (retry)="reload()"
+>
+  <ng-template>
+    <div class="scroll">
+      <div class="canvas-box" [style.width]="chartWidth()">
+        <canvas baseChart type="bar" [data]="chartData()" [options]="chartOptions()"></canvas>
+      </div>
+    </div>
+    @if (total() > rows().length) {
+      <p class="muted note">Showing the first {{ rows().length }} of {{ total() }} queries.</p>
+    }
+  </ng-template>
+</app-async-state>

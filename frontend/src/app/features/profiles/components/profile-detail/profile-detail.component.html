@@ -1,0 +1,45 @@
+<div class="page">
+  @if (loading()) {
+    <div class="card card-pad"><app-loading-spinner variant="skeleton" /></div>
+  } @else if (error(); as err) {
+    <div class="card"><app-error-state title="Unable to load business profile" [message]="err" (retry)="loadProfile()" /></div>
+  } @else if (profile(); as p) {
+    <app-header [title]="p.name || p.domain" [subtitle]="p.domain">
+      <button mat-flat-button class="run-btn" (click)="runPipeline()" [disabled]="running()">
+        @if (running()) {
+          <mat-spinner diameter="18" />
+        } @else {
+          <mat-icon>{{ needsRetry() ? 'refresh' : 'play_arrow' }}</mat-icon>
+        }
+        {{ runLabel() }}
+      </button>
+    </app-header>
+
+    <div class="stack">
+      <div class="info-grid">
+        <app-profile-info-card [profile]="p" />
+        <app-pipeline-summary-card [run]="run()" [status]="pipelineStatus()" [running]="running()" [canRetry]="needsRetry()" (retry)="runPipeline()" />
+      </div>
+
+      <section class="card tabs-card">
+        <mat-tab-group animationDuration="150ms" mat-stretch-tabs="false" dynamicHeight>
+          <mat-tab label="Queries">
+            <ng-template matTabContent>
+              <div class="tab-pad"><app-query-list [profileUuid]="p.uuid || uuid()" [refreshKey]="refreshKey()" /></div>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Opportunity Chart">
+            <ng-template matTabContent>
+              <div class="tab-pad"><app-opportunity-chart [profileUuid]="p.uuid || uuid()" [refreshKey]="refreshKey()" /></div>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Recommendations">
+            <ng-template matTabContent>
+              <div class="tab-pad"><app-recommendation-list [profileUuid]="p.uuid || uuid()" [refreshKey]="refreshKey()" /></div>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </section>
+    </div>
+  }
+</div>

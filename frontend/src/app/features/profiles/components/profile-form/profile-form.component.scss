@@ -1,0 +1,6 @@
+.narrow { max-width: 720px; }
+.form { display: flex; flex-direction: column; gap: 6px; }
+.actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
+.actions button mat-spinner { display: inline-block; margin-right: 8px; }
+.disabled { pointer-events: none; opacity: 0.5; }
+.form-error { display: flex; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 8px; border-radius: 8px; background: var(--danger-bg); color: var(--danger); font-size: 14px; }

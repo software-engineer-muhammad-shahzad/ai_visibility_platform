@@ -1,0 +1,19 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav
+    #drawer
+    class="sidebar"
+    [mode]="isNarrow() ? 'over' : 'side'"
+    [opened]="!isNarrow()"
+    [fixedInViewport]="isNarrow()"
+  >
+    <app-sidebar (navigated)="isNarrow() && drawer.close()" />
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <app-navbar [showMenuButton]="isNarrow()" (menuToggle)="drawer.toggle()" />
+    <main class="main">
+      <!-- the page fades/slides in whenever the route changes (@angular/animations) -->
+      <div [@routeTransition]="routeKey()"><router-outlet /></div>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

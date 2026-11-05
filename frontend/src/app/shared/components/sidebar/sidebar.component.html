@@ -1,0 +1,17 @@
+<a class="brand" routerLink="/dashboard">
+  <span class="logo"><mat-icon>auto_graph</mat-icon></span>
+  <span>AI Visibility</span>
+</a>
+<nav aria-label="Main navigation">
+  @for (item of nav; track item.link) {
+    <a class="nav-link" [routerLink]="item.link" routerLinkActive="active" (click)="navigated.emit()">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+    </a>
+  }
+</nav>
+<div class="spacer"></div>
+<button class="nav-link theme-toggle" type="button" (click)="theme.toggle()" [attr.aria-pressed]="theme.dark()">
+  <mat-icon>{{ theme.dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  <span>{{ theme.dark() ? 'Light mode' : 'Dark mode' }}</span>
+</button>

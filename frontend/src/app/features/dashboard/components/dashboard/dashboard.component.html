@@ -1,0 +1,62 @@
+<div class="page">
+  <app-header title="Dashboard" subtitle="Overview of your business profiles and pipeline activity.">
+    <a mat-flat-button routerLink="/profiles/new"><mat-icon>add</mat-icon> Add New Business Profile</a>
+  </app-header>
+
+  @if (loading()) {
+    <div class="grid-3">
+      <app-loading-spinner variant="skeleton" [rows]="[1]" />
+      <app-loading-spinner variant="skeleton" [rows]="[1]" />
+      <app-loading-spinner variant="skeleton" [rows]="[1]" />
+    </div>
+    <div class="card card-pad" style="margin-top: 16px"><app-loading-spinner variant="skeleton" /></div>
+  } @else if (error(); as err) {
+    <div class="card"><app-error-state title="Unable to load the dashboard" [message]="err" (retry)="load()" /></div>
+  } @else if (summary(); as s) {
+    @if (s.totalProfiles === 0 && s.unreachableProfiles === 0) {
+      <div class="card">
+        <app-empty-state
+          icon="business_center"
+          title="No business profiles yet"
+          message="Create your first business profile to discover search queries and track AI visibility."
+        >
+          <a mat-flat-button routerLink="/profiles/new"><mat-icon>add</mat-icon> Add New Business Profile</a>
+        </app-empty-state>
+      </div>
+    } @else {
+      <div class="stack">
+        <div class="grid-3">
+          <app-stat-card icon="business_center" label="Total Business Profiles" [value]="s.totalProfiles" />
+          <app-stat-card icon="manage_search" label="Total Queries Discovered" [value]="s.totalQueries | number" />
+          <app-stat-card
+            icon="speed"
+            label="Average Opportunity Score"
+            [value]="s.averageScore === null ? '—' : (s.averageScore | number: '1.2-2')"
+            [hint]="s.averageScore === null ? 'No scored queries yet' : 'Across ' + s.scoredSample + ' scored queries'"
+          />
+        </div>
+
+        @if (s.unreachableProfiles > 0) {
+          <div class="card card-pad notice">
+            <mat-icon>warning_amber</mat-icon>
+            {{ s.unreachableProfiles }} remembered profile(s) could not be loaded from the API and are excluded from these totals.
+          </div>
+        }
+
+        <app-section-card heading="Recent pipeline runs">
+          @if (s.runs.length === 0) {
+            <app-empty-state
+              icon="play_circle"
+              title="No pipeline runs yet"
+              message="Open a business profile and press “Run Pipeline” to discover and score queries."
+            />
+          } @else {
+            <app-recent-runs-table [runs]="s.runs" />
+          }
+        </app-section-card>
+
+        <p class="muted footnote">The API has no run-history endpoint yet, so “Recent pipeline runs” shows the latest run started from this browser.</p>
+      </div>
+    }
+  }
+</div>

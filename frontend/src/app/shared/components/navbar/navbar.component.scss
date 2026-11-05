@@ -1,0 +1,17 @@
+.topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 8px; min-height: 64px; padding: 8px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.grow { flex: 1; }
+.titles { display: flex; flex-direction: column; min-width: 0; }
+.crumbs { display: flex; flex-direction: row; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 0; }
+.crumbs a { color: var(--text-muted); text-decoration: none; }
+.crumbs a:hover { color: var(--accent); }
+.crumbs .current { color: var(--text); }
+.sep { font-size: 16px; width: 16px; height: 16px; }
+.title { font-size: 18px; font-weight: 600; }
+@media (max-width: 900px) { .topbar { padding: 8px 12px; } }
+.avatar-btn { display: flex; align-items: center; background: none; border: 0; cursor: pointer; padding: 2px 0 2px 4px; border-radius: 999px; color: var(--text); }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #6366f1); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; }
+.avatar.lg { width: 44px; height: 44px; font-size: 15px; }
+.user-info { display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-width: 240px; max-width: 320px; outline: none; }
+.who { min-width: 0; }
+.uname { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+.uemail { font-size: 13px; color: var(--text-muted); overflow-wrap: anywhere; }

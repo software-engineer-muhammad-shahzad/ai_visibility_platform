@@ -1,0 +1,85 @@
+<div class="page narrow">
+  <app-header
+    title="New Business Profile"
+    subtitle="Describe the business so the pipeline can discover relevant search queries."
+  />
+
+  <form class="card card-pad form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    @if (submitError(); as err) {
+      <div class="form-error" role="alert"><mat-icon>error_outline</mat-icon> {{ err }}</div>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Business name</mat-label>
+      <input matInput formControlName="name" autocomplete="organization" required />
+      @if (form.controls.name.hasError('required')) {
+        <mat-error>Business name is required.</mat-error>
+      } @else if (form.controls.name.hasError('maxlength')) {
+        <mat-error>Business name must be 120 characters or fewer.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Domain</mat-label>
+      <input matInput formControlName="domain" placeholder="surferseo.com" autocomplete="off" required />
+      <mat-hint>Hostname only — no http:// or https://</mat-hint>
+      @if (form.controls.domain.hasError('required')) {
+        <mat-error>Domain is required.</mat-error>
+      } @else if (form.controls.domain.hasError('protocol')) {
+        <mat-error>Remove “http://” or “https://” — use just the domain, e.g. surferseo.com.</mat-error>
+      } @else if (form.controls.domain.hasError('domain')) {
+        <mat-error>Enter a valid domain such as surferseo.com (no paths, spaces or slashes).</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Industry</mat-label>
+      <input matInput formControlName="industry" placeholder="SEO software" required />
+      @if (form.controls.industry.hasError('required')) {
+        <mat-error>Industry is required.</mat-error>
+      } @else if (form.controls.industry.hasError('maxlength')) {
+        <mat-error>Industry must be 120 characters or fewer.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="4" placeholder="What does the business offer and who is it for?"></textarea>
+      @if (form.controls.description.hasError('maxlength')) {
+        <mat-error>Description must be 1000 characters or fewer.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Competitors</mat-label>
+      <mat-chip-grid #grid aria-label="Competitors">
+        @for (c of form.controls.competitors.value; track c) {
+          <mat-chip-row (removed)="removeCompetitor(c)">
+            {{ c }}
+            <button matChipRemove [attr.aria-label]="'Remove ' + c"><mat-icon>cancel</mat-icon></button>
+          </mat-chip-row>
+        }
+        <input
+          placeholder="Type a competitor and press Enter"
+          [formControl]="competitorInput"
+          [matChipInputFor]="grid"
+          [matChipInputSeparatorKeyCodes]="separatorKeys"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="addCompetitor($event)"
+        />
+      </mat-chip-grid>
+      <mat-hint>Optional. Press Enter or comma to add; click ✕ to remove.</mat-hint>
+    </mat-form-field>
+
+    <div class="actions">
+      <a mat-button routerLink="/profiles" [class.disabled]="submitting()">Cancel</a>
+      <button mat-flat-button type="submit" [disabled]="submitting() || form.invalid">
+        @if (submitting()) {
+          <mat-spinner diameter="18" /> Creating…
+        } @else {
+          Create profile
+        }
+      </button>
+    </div>
+  </form>
+</div>

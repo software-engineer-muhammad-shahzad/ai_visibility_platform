@@ -1,0 +1,6 @@
+.info-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; }
+@media (max-width: 1000px) { .info-grid { grid-template-columns: 1fr; } }
+.run-btn { min-width: 170px; }
+.run-btn mat-spinner { display: inline-block; margin-right: 8px; }
+.tabs-card { overflow: hidden; }
+.tab-pad { padding: 20px; }

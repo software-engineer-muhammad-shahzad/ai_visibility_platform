@@ -1,0 +1,12 @@
+.rec { border-left: 4px solid var(--border); background: var(--surface); }
+.rec.high { border-left-color: var(--danger); }
+.rec.medium { border-left-color: #f59e0b; }
+.rec.low { border-left-color: var(--success); }
+mat-card-header { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; padding-bottom: 8px; }
+.title { font-size: 16px; font-weight: 600; overflow-wrap: anywhere; flex: 1 1 100%; }
+.type-icon { font-size: 16px; width: 16px; height: 16px; vertical-align: -3px; margin-right: 2px; }
+.priority { margin-left: auto; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; text-transform: capitalize; background: var(--neutral-bg); color: var(--text-muted); }
+.priority.high { background: var(--danger-bg); color: var(--danger); }
+.priority.medium { background: var(--warning-bg); color: var(--warning); }
+.priority.low { background: var(--success-bg); color: var(--success); }
+.rationale { margin: 0 0 12px; color: var(--text-muted); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }

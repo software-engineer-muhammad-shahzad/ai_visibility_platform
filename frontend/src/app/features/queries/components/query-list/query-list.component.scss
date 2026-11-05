@@ -1,0 +1,9 @@
+.query-cell { max-width: 420px; min-width: 200px; overflow-wrap: anywhere; word-break: break-word; padding: 10px 16px; }
+.dim { opacity: 0.55; transition: opacity 0.15s; }
+.pos { margin-left: 6px; font-size: 12px; }
+.score { font-weight: 700; font-size: 13px; --mdc-chip-container-height: 28px; --mat-chip-container-height: 28px; }
+.score.high { --mdc-chip-elevated-container-color: var(--success-bg); --mat-chip-elevated-container-color: var(--success-bg); --mdc-chip-label-text-color: var(--success); --mat-chip-label-text-color: var(--success); }
+.score.mid { --mdc-chip-elevated-container-color: var(--warning-bg); --mat-chip-elevated-container-color: var(--warning-bg); --mdc-chip-label-text-color: var(--warning); --mat-chip-label-text-color: var(--warning); }
+.score.low { --mdc-chip-elevated-container-color: var(--danger-bg); --mat-chip-elevated-container-color: var(--danger-bg); --mdc-chip-label-text-color: var(--danger); --mat-chip-label-text-color: var(--danger); }
+button mat-spinner { display: inline-block; margin-right: 6px; }
+td button mat-icon { margin-right: 4px; }

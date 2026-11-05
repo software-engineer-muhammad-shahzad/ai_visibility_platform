@@ -1,0 +1,37 @@
+<header class="topbar">
+  @if (showMenuButton()) {
+    <button mat-icon-button (click)="menuToggle.emit()" aria-label="Toggle navigation"><mat-icon>menu</mat-icon></button>
+  }
+  <div class="titles">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      @for (c of crumbs(); track $index; let last = $last) {
+        @if (c.link && !last) {
+          <a [routerLink]="c.link">{{ c.label }}</a>
+        } @else {
+          <span [class.current]="last">{{ c.label }}</span>
+        }
+        @if (!last) {
+          <mat-icon class="sep">chevron_right</mat-icon>
+        }
+      }
+    </nav>
+    <div class="title">{{ pageTitle() }}</div>
+  </div>
+  <span class="grow"></span>
+  <button mat-icon-button matTooltip="Toggle dark mode" (click)="theme.toggle()" aria-label="Toggle dark mode">
+    <mat-icon>{{ theme.dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+  <button class="avatar-btn" [matMenuTriggerFor]="userMenu" aria-label="Open profile menu">
+    <span class="avatar">{{ currentUser.initials() }}</span>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+  <mat-menu #userMenu="matMenu" xPosition="before" class="user-menu">
+    <div class="user-info" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" tabindex="-1">
+      <span class="avatar lg">{{ currentUser.initials() }}</span>
+      <div class="who">
+        <div class="uname">{{ currentUser.user().username }}</div>
+        <div class="uemail">{{ currentUser.user().email }}</div>
+      </div>
+    </div>
+  </mat-menu>
+</header>

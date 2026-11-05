@@ -1,0 +1,22 @@
+<mat-card appearance="outlined" class="rec {{ priority() }}">
+  <mat-card-header>
+    <mat-card-title class="title">{{ recommendation().title || 'Untitled recommendation' }}</mat-card-title>
+    <mat-card-subtitle>
+      <mat-icon class="type-icon">{{ typeIcon() }}</mat-icon>
+      {{ recommendation().content_type | contentTypeLabel }}
+    </mat-card-subtitle>
+    <span class="priority {{ priority() }}">{{ recommendation().priority ?? 'No' }} priority</span>
+  </mat-card-header>
+  <mat-card-content>
+    @if (recommendation().rationale) {
+      <p class="rationale">{{ recommendation().rationale }}</p>
+    }
+    @if (recommendation().target_keywords.length) {
+      <mat-chip-set aria-label="Target keywords">
+        @for (k of recommendation().target_keywords; track k) {
+          <mat-chip disableRipple>{{ k }}</mat-chip>
+        }
+      </mat-chip-set>
+    }
+  </mat-card-content>
+</mat-card>

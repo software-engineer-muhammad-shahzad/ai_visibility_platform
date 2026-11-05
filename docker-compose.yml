@@ -1,0 +1,21 @@
+# docker compose up --build   ->  app on http://localhost:4200, API on http://localhost:5000/api/v1
+# Needs backend/.env with DATABASE_URL (Neon) and your AI provider key.
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      FLASK_ENV: production
+      HOST: 0.0.0.0
+      PORT: "5000"
+      CORS_ORIGINS: http://localhost:4200
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"

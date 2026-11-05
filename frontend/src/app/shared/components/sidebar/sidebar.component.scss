@@ -1,0 +1,9 @@
+:host { display: flex; flex-direction: column; flex: 1; color: #cbd5e6; }
+.brand { display: flex; align-items: center; gap: 12px; color: #fff; font-weight: 700; font-size: 18px; text-decoration: none; padding: 4px 8px 24px; }
+.logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #6366f1); display: grid; place-items: center; }
+nav { display: flex; flex-direction: column; gap: 4px; }
+.nav-link { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: #cbd5e6; text-decoration: none; font: inherit; font-size: 14px; font-weight: 500; background: none; border: 0; cursor: pointer; width: 100%; text-align: left; }
+.nav-link:hover { background: var(--sidebar-hover); color: #fff; }
+.nav-link.active { background: #1f3a73; color: #fff; }
+.spacer { flex: 1; }
+.theme-toggle { margin-top: 12px; }
