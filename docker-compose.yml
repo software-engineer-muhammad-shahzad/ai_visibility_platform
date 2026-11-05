@@ -1,5 +1,6 @@
 # docker compose up --build   ->  app on http://localhost:4200, API on http://localhost:5000/api/v1
-# Needs backend/.env with DATABASE_URL (Neon) and your AI provider key.
+# Needs backend/.env (copy backend/.env.example) with GEMINI_API_KEY. DATABASE_URL is optional:
+# it defaults to SQLite, or set it to a Postgres URL (e.g. Neon).
 services:
   backend:
     build: ./backend
